@@ -142,7 +142,6 @@ https://open-meteo.com/
 
 El archivo de Kaggle se carga utilizando la librería `pandas`.
 
-```python
 df_kaggle = pd.read_csv("../data/LA_daily_climate.csv")
 ## 2. Exploración inicial
 
