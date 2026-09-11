@@ -13,11 +13,19 @@ def cargar_y_limpiar_datos(ruta_clima="../data/LA_daily_climate.csv", ruta_aire=
         df_clima['country'] = df_clima['country'].astype(str).str.strip()
 
     # Formato de fechas
-    df_clima['date'] = pd.to_datetime(df_clima['date'])
-    df_aire['date'] = pd.to_datetime(df_aire['date'])
+    df_clima['date'] = pd.to_datetime(df_clima['date'], utc=True)
+    df_aire['date'] = pd.to_datetime(df_aire['date'], utc=True)
 
-    # Cruce masivo
-    df_completo = pd.merge(df_clima, df_aire, on='date', how='inner', suffixes=('_clima', '_aire')).drop_duplicates()
+    # Cruce de los datos por fecha y ubicación
+    df_completo = pd.merge(
+        df_clima,
+        df_aire,
+        on=['date', 'latitude', 'longitude'],
+        how='inner',
+        suffixes=('_clima', '_aire'),
+        validate='one_to_one'
+    ).drop_duplicates()
+
     return df_completo
 
 def obtener_promedios_por_ciudad(df):
