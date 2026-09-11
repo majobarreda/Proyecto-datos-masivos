@@ -5,6 +5,10 @@ URL_API = "https://air-quality-api.open-meteo.com/v1/air-quality"
 
 df_clima = pd.read_csv("data/LA_daily_climate.csv")
 
+# Limpieza preventiva de espacios en blanco
+df_clima['city'] = df_clima['city'].astype(str).str.strip()
+df_clima['country'] = df_clima['country'].astype(str).str.strip()
+
 # Obtener las ciudades del dataset
 ciudades = (
     df_clima[

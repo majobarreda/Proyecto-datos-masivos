@@ -6,30 +6,23 @@ def cargar_y_limpiar_datos(ruta_clima="../data/LA_daily_climate.csv", ruta_aire=
     df_clima = pd.read_csv(ruta_clima)
     df_aire = pd.read_csv(ruta_aire)
 
-    # Limpieza de espacios en cadenas de texto
-    if 'city' in df_clima.columns:
-        df_clima['city'] = df_clima['city'].astype(str).str.strip()
-    if 'country' in df_clima.columns:
-        df_clima['country'] = df_clima['country'].astype(str).str.strip()
+    # Limpieza de espacios en blanco en ambos DataFrames
+    for df in [df_clima, df_aire]:
+        for col in ['city', 'country']:
+            if col in df.columns:
+                df[col] = df[col].astype(str).str.strip()
 
-    # Formato de fechas
+    # Formato de fechas estandarizado a UTC
     df_clima['date'] = pd.to_datetime(df_clima['date'], utc=True)
     df_aire['date'] = pd.to_datetime(df_aire['date'], utc=True)
 
-    # Cruce de los datos por fecha y ubicación
+    # Cruce completo por fecha y ubicacion para evitar columnas duplicadas
+    llaves_union = ['date', 'city', 'country', 'latitude', 'longitude']
     df_completo = pd.merge(
         df_clima,
         df_aire,
-        on=['date', 'latitude', 'longitude'],
-        how='inner',
-        suffixes=('_clima', '_aire'),
-        validate='one_to_one'
+        on=llaves_union,
+        how='inner'
     ).drop_duplicates()
 
     return df_completo
-
-def obtener_promedios_por_ciudad(df):
-    """Calcula los promedios de temperatura y contaminantes principales por ciudad."""
-    columnas_interes = ['temperature_2m_mean', 'pm10', 'pm2_5', 'carbon_monoxide', 'nitrogen_dioxide']
-    columnas_presentes = [col for col in columnas_interes if col in df.columns]
-    return df.groupby('city')[columnas_presentes].mean()
