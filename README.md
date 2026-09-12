@@ -13,7 +13,6 @@ Proyecto semestral del curso de Datos Masivos. Integra un dataset climático dia
 | María José Barreda | 
 | Sofia Villegas | 
 | Emiliano Martinez| 
-| Diego Garcia | 
 
 ---
 
