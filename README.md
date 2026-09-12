@@ -1,14 +1,19 @@
 # Relación entre condiciones meteorológicas y calidad del aire en ciudades de Latinoamérica
 
-## Descripción del proyecto
+Proyecto semestral del curso de Datos Masivos. Integra un dataset climático diario de Kaggle con datos de calidad del aire obtenidos mediante la Open-Meteo Air Quality API, para analizar la relación entre el clima y los niveles de contaminación en 20 ciudades de Latinoamérica.
 
-Este proyecto analiza la relación entre las condiciones meteorológicas y los niveles de contaminación del aire en distintas ciudades de Latinoamérica, integrando dos fuentes de datos independientes.
+---
 
-La primera fuente corresponde al dataset **Latin America Weather and Air Quality Data**, disponible en Kaggle, que contiene información meteorológica diaria de 20 ciudades de América Latina.
+## Integrantes
 
-La segunda fuente es la **Open-Meteo Air Quality API**, de la cual se extrajeron los niveles de contaminantes atmosféricos para esas mismas 20 ciudades utilizando Python y la librería `requests`.
+<!-- COMPLETAR: nombre completo y usuario de GitHub de cada integrante -->
 
-El propósito es cargar, explorar, limpiar e integrar ambas fuentes en un solo conjunto de datos que permita identificar patrones entre variables meteorológicas (temperatura, precipitación, velocidad del viento, evapotranspiración) y variables de calidad del aire (PM10, PM2.5, CO, NO₂, SO₂ y O₃), así como comparar diferencias entre ciudades y países de la región.
+| Nombre | Usuario de GitHub |
+|---|---|
+| María José Barreda | @majobarreda |
+| Francisco Paolo del Valle Reyes | @usuario |
+| *Integrante 3* | @usuario |
+| *Integrante 4* | @usuario |
 
 ---
 
@@ -16,276 +21,280 @@ El propósito es cargar, explorar, limpiar e integrar ambas fuentes en un solo c
 
 Las ciudades de Latinoamérica presentan diferencias importantes en sus condiciones meteorológicas debido a factores geográficos, climáticos y regionales.
 
-Variables como la temperatura, la precipitación y la velocidad del viento influyen en la dispersión, acumulación y formación de contaminantes atmosféricos. Sin embargo, la información meteorológica y la de calidad del aire se encuentra distribuida entre distintas fuentes, con diferentes formatos, escalas temporales y zonas horarias.
+Variables como la temperatura, la precipitación y la velocidad del viento influyen en la dispersión, acumulación y formación de contaminantes atmosféricos: la lluvia lava partículas suspendidas, el viento dispersa contaminantes y la radiación solar favorece la formación de ozono troposférico.
 
-Por esta razón es necesario un proceso de carga, exploración, limpieza e integración de datos que permita relacionar ambos tipos de variables sobre una misma base temporal y geográfica.
+Sin embargo, la información meteorológica y la de calidad del aire se encuentra distribuida entre distintas fuentes, con diferentes formatos, escalas temporales y zonas horarias. Por esta razón es necesario un proceso de adquisición, limpieza e integración que permita relacionar ambos tipos de variables sobre una misma base temporal y geográfica.
 
 ---
 
-## Pregunta de investigación
+## Pregunta principal
 
 **¿Qué relación existe entre las condiciones meteorológicas y los niveles de contaminación del aire en distintas ciudades de Latinoamérica?**
 
-De manera particular se busca analizar el comportamiento conjunto de:
+### Preguntas secundarias
 
-**Variables meteorológicas**
-- Temperatura máxima, mínima y promedio.
-- Temperatura aparente.
-- Precipitación acumulada.
-- Velocidad máxima del viento.
-- Evapotranspiración de referencia.
+1. ¿Qué ciudades presentan los mayores y menores niveles promedio de PM2.5 y PM10 en el periodo analizado?
+2. ¿Existe una relación negativa entre la precipitación y la concentración de material particulado?
+3. ¿La velocidad del viento se asocia con menores concentraciones de contaminantes?
+4. ¿La temperatura se relaciona con los niveles de ozono (O₃)?
+5. ¿Los patrones observados se repiten entre ciudades o dependen de características locales?
 
-**Variables de calidad del aire**
-- PM10.
-- PM2.5.
-- Monóxido de carbono (CO).
-- Dióxido de nitrógeno (NO₂).
-- Dióxido de azufre (SO₂).
-- Ozono (O₃).
+### ¿Qué representa una fila?
 
-También se busca identificar diferencias y similitudes entre ciudades y países.
+Cada registro del dataset integrado representa **la medición diaria de una ciudad**: las condiciones meteorológicas y los niveles promedio de contaminantes de una ciudad específica en una fecha específica.
+
+La unidad de análisis es, por lo tanto, la combinación **ciudad × día**.
+
+---
+
+## Objetivo
+
+Construir un conjunto de datos reproducible que integre información meteorológica y de calidad del aire para 20 ciudades de Latinoamérica, y utilizarlo para identificar y cuantificar la relación entre variables climáticas y niveles de contaminación atmosférica.
+
+Objetivos específicos:
+
+- Obtener mediante código los datos de calidad del aire de la Open-Meteo Air Quality API.
+- Homologar la escala temporal, la zona horaria y los identificadores geográficos de ambas fuentes.
+- Integrar ambas fuentes en un único dataset validado, sin valores faltantes ni duplicados.
+- Analizar correlaciones y diferencias entre ciudades y países.
 
 ---
 
 ## Usuario o interesado
 
-Los resultados del proyecto podrían ser de interés para:
-
-- Autoridades ambientales.
-- Organismos gubernamentales.
-- Investigadores.
-- Estudiantes.
-- Organizaciones relacionadas con medio ambiente.
-- Personas interesadas en comparar condiciones climáticas y de contaminación entre ciudades de Latinoamérica.
-
-El análisis puede ayudar a identificar patrones meteorológicos regionales, diferencias entre ciudades y posibles relaciones entre el clima y la concentración de contaminantes, como apoyo para análisis ambientales, estudios comparativos y toma de decisiones.
+| Usuario | Decisión que podría tomar con esta información |
+|---|---|
+| Autoridades ambientales municipales | Identificar en qué condiciones climáticas conviene activar alertas o restricciones vehiculares. |
+| Organismos de salud pública | Anticipar días de mayor exposición a material particulado para poblaciones vulnerables. |
+| Investigadores y estudiantes | Usar el dataset integrado como base para estudios comparativos regionales. |
+| Organizaciones ambientales | Sustentar comparaciones entre ciudades con evidencia cuantitativa. |
 
 ---
 
-# Fuentes de datos
+## Fuentes de datos
 
-## 1. Latin America Weather and Air Quality Data — Kaggle
+El proyecto utiliza **dos fuentes**, una de descarga y una obtenida mediante código.
 
-Archivo utilizado: `LA_daily_climate.csv`
+### 1. Latin America Weather and Air Quality Data (Kaggle)
 
-Contiene información meteorológica diaria de diferentes ciudades de Latinoamérica.
+| Campo | Detalle |
+|---|---|
+| Origen | Kaggle — https://www.kaggle.com/datasets/anycaroliny/latin-america-weather-and-air-quality-data |
+| Propietario | Usuario `anycaroliny` (dataset público) |
+| Método de acceso | Descarga manual del archivo `LA_daily_climate.csv` |
+| Formato | CSV |
+| Volumen | 31,440 registros × 14 variables |
+| Periodo disponible | 2020-01-01 a 2024-04-20 (1,572 fechas) |
+| Cobertura | 20 ciudades, 20 países |
+| Frecuencia de actualización | Estática (no se actualiza) |
+| Restricciones de uso | Licencia abierta del dataset en Kaggle |
+| Problemas conocidos | `date` viene como texto; posibles espacios en nombres de ciudad; no incluye variables de contaminación pese al nombre del dataset |
 
-### Dimensiones iniciales
+**Variables principales**
 
-- **31,440 registros**
-- **14 variables**
-- **20 ciudades**
-- **20 países**
-- **1,572 fechas diferentes**
+| Variable | Tipo | Descripción | Unidad |
+|---|---|---|---|
+| `country` | string | País | — |
+| `city` | string | Ciudad | — |
+| `date` | date | Fecha del registro | — |
+| `latitude` / `longitude` | float | Coordenadas de la ciudad | grados |
+| `temperature_2m_max` / `_min` / `_mean` | float | Temperatura a 2 m | °C |
+| `apparent_temperature_max` / `_min` / `_mean` | float | Temperatura aparente | °C |
+| `precipitation_sum` | float | Precipitación acumulada del día | mm |
+| `wind_speed_10m_max` | float | Velocidad máxima del viento a 10 m | km/h |
+| `et0_fao_evapotranspiration` | float | Evapotranspiración de referencia FAO | mm |
 
-### Variables
+### 2. Open-Meteo Air Quality API
 
-- `country`: país.
-- `city`: ciudad.
-- `date`: fecha del registro.
-- `latitude`: latitud.
-- `longitude`: longitud.
-- `temperature_2m_max`: temperatura máxima a 2 metros.
-- `temperature_2m_min`: temperatura mínima a 2 metros.
-- `temperature_2m_mean`: temperatura promedio a 2 metros.
-- `apparent_temperature_max`: temperatura aparente máxima.
-- `apparent_temperature_min`: temperatura aparente mínima.
-- `apparent_temperature_mean`: temperatura aparente promedio.
-- `precipitation_sum`: precipitación acumulada.
-- `wind_speed_10m_max`: velocidad máxima del viento a 10 metros.
-- `et0_fao_evapotranspiration`: evapotranspiración de referencia.
+| Campo | Detalle |
+|---|---|
+| Origen | Open-Meteo — https://open-meteo.com/ |
+| Propietario | Open-Meteo |
+| Método de acceso | **Obtenida mediante código**: peticiones HTTP con `requests` desde `src/ingestion/` |
+| Formato | JSON (respuesta) → CSV (almacenamiento) |
+| Granularidad original | Horaria |
+| Periodo extraído | 2023-01-01 a 2024-04-20 |
+| Cobertura | Las mismas 20 ciudades, consultadas por coordenadas |
+| Credenciales | **No requiere API key** para uso no comercial |
+| Restricciones de uso | Límite de peticiones diarias en el plan gratuito; uso no comercial |
+| Problemas conocidos | Valores faltantes en algunos contaminantes para consultas de 2022 |
 
-**Fuente:** https://www.kaggle.com/datasets/anycaroliny/latin-america-weather-and-air-quality-data
+**Variables principales**
 
----
+| Variable | Tipo | Descripción | Unidad |
+|---|---|---|---|
+| `pm10` | float | Material particulado ≤ 10 µm | µg/m³ |
+| `pm2_5` | float | Material particulado ≤ 2.5 µm | µg/m³ |
+| `carbon_monoxide` | float | Monóxido de carbono (CO) | µg/m³ |
+| `nitrogen_dioxide` | float | Dióxido de nitrógeno (NO₂) | µg/m³ |
+| `sulphur_dioxide` | float | Dióxido de azufre (SO₂) | µg/m³ |
+| `ozone` | float | Ozono (O₃) | µg/m³ |
 
-## 2. Open-Meteo Air Quality API
-
-La segunda fuente es la API de Open-Meteo, de la cual se extrajeron los datos de calidad del aire.
-
-La consulta se realizó de manera automatizada con Python (`requests`), iterando sobre las coordenadas de las 20 ciudades presentes en el dataset de Kaggle.
-
-Contaminantes extraídos:
-
-- `pm10`
-- `pm2_5`
-- `carbon_monoxide` (CO)
-- `nitrogen_dioxide` (NO₂)
-- `sulphur_dioxide` (SO₂)
-- `ozone` (O₃)
-
-**Fuente:** https://open-meteo.com/
-
-### Definición del periodo de análisis
+#### Definición del periodo de análisis
 
 El dataset de Kaggle contiene información desde 2020, pero para la calidad del aire se trabajó con el periodo que podía obtenerse de manera consistente mediante la API.
 
-Durante las pruebas de extracción se detectó que en algunas consultas correspondientes a 2022 aparecían valores faltantes en los contaminantes. Por esta razón se decidió limitar el análisis al periodo:
-
-**1 de enero de 2023 — 20 de abril de 2024**
-
-La fecha final corresponde al último registro disponible en el dataset de Kaggle. Con este recorte se logró obtener la información de las 20 ciudades sin valores faltantes en la extracción utilizada.
+Durante las pruebas de extracción se detectó que en consultas correspondientes a 2022 aparecían valores faltantes en los contaminantes. Por esa razón el análisis se limitó al periodo **2023-01-01 – 2024-04-20**, donde la extracción devolvió las 20 ciudades sin valores faltantes. La fecha final corresponde al último registro disponible en el dataset de Kaggle.
 
 ---
 
-# Metodología
+## Estructura del repositorio
 
-## 1. Carga de datos
-
-El archivo de Kaggle se carga con `pandas`:
-
-```python
-df_kaggle = pd.read_csv("../data/LA_daily_climate.csv")
+```
+Proyecto-datos-masivos/
+├── data/
+│   ├── raw/                    # datos crudos (no versionados)
+│   ├── interim/                # datos parcialmente transformados
+│   ├── processed/              # dataset integrado listo para análisis
+│   └── sample/                 # muestra pequeña para ejecutar los notebooks
+│
+├── docs/
+│   ├── project_scope.md        # alcance, unidad de análisis, limitaciones
+│   ├── data_dictionary.md      # diccionario de datos de ambas fuentes
+│   └── architecture.md         # arquitectura propuesta
+│
+├── notebooks/
+│   ├── 01_exploration.ipynb    # exploración inicial y diagnóstico
+│   └── 02_cleaning.ipynb       # limpieza e integración de fuentes
+│
+├── src/
+│   └── ingestion/              # extracción de la Open-Meteo Air Quality API
+│
+├── .gitignore
+├── requirements.txt
+└── README.md
 ```
 
-Los datos de calidad del aire se obtienen ejecutando los scripts de extracción ubicados en `src/ingestion/`.
+Los archivos de datos crudos no se versionan en GitHub. El repositorio incluye una muestra en `data/sample/` para poder ejecutar los notebooks sin descargar el dataset completo.
 
 ---
 
-## 2. Exploración inicial
+## Instrucciones iniciales de ejecución
 
-Después de cargar el dataset se revisaron:
+### Requisitos
 
-- Primeras filas.
-- Número de registros y columnas.
-- Nombre de las variables y tipos de datos.
-- Valores faltantes y registros duplicados.
-- Estadísticas descriptivas.
-- Valores únicos, número de ciudades y de países.
+- Python 3.10 o superior
+- Las dependencias listadas en `requirements.txt`
 
-El dataset inicial contiene **31,440 filas y 14 columnas**, con **20 ciudades y 20 países**.
+### 1. Clonar el repositorio
 
-Las variables `country`, `city` y `date` se encontraban originalmente como texto, mientras que las variables meteorológicas y las coordenadas estaban almacenadas como valores numéricos.
+```bash
+git clone https://github.com/majobarreda/Proyecto-datos-masivos.git
+cd Proyecto-datos-masivos
+```
+
+### 2. Crear el entorno e instalar dependencias
+
+```bash
+python -m venv .venv
+source .venv/bin/activate        # en Windows: .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### 3. Obtener los datos climáticos (Kaggle)
+
+Descargar `LA_daily_climate.csv` desde el enlace del dataset y colocarlo en:
+
+```
+data/raw/LA_daily_climate.csv
+```
+
+### 4. Obtener los datos de calidad del aire (API)
+
+```bash
+python -m src.ingestion.get_air_quality
+```
+
+El script consulta la Open-Meteo Air Quality API para las 20 ciudades del dataset climático y guarda el resultado crudo en `data/raw/`.
+
+**La API no requiere credenciales.** Si más adelante se incorpora una fuente que sí las requiera, deberán configurarse mediante variables de entorno y nunca subirse al repositorio.
+
+### 5. Ejecutar los notebooks
+
+```bash
+jupyter notebook notebooks/01_exploration.ipynb
+```
+
+Todas las rutas del proyecto son relativas a la raíz del repositorio; no dependen de la computadora de ningún integrante.
 
 ---
 
-## 3. Limpieza y transformación de datos
+## Metodología
 
-En la exploración inicial se confirmó que el dataset de Kaggle no presentaba valores faltantes ni registros completamente duplicados.
+### Carga y exploración inicial
 
-Las transformaciones aplicadas a ambas fuentes fueron las siguientes:
+Se revisaron dimensiones, tipos de datos, valores faltantes, duplicados, estadísticas descriptivas y valores únicos. El dataset de Kaggle contiene **31,440 filas y 14 columnas**, con 20 ciudades y 20 países, **sin valores faltantes ni registros duplicados**.
 
-**a) Fechas y zona horaria**
+### Limpieza y transformación
 
-- Se convirtió la variable `date` de texto a formato de fecha.
-- Como las dos fuentes manejaban las fechas de forma distinta, se unificó el formato y se estandarizó todo a **UTC**, trabajando con horas de 24 en lugar de am/pm. Esto evitó desfases al momento de unir los conjuntos de datos.
+**a) Fechas y zona horaria.** Se convirtió `date` de texto a formato fecha. Como las dos fuentes manejaban las fechas de forma distinta, se unificó el formato y se estandarizó todo a **UTC**, trabajando con horas de 24 en lugar de am/pm, para evitar desfases al unir los conjuntos.
 
-**b) Agregación temporal de la API**
+**b) Agregación temporal.** La API entrega datos **horarios** y la base climática es **diaria**. Se calculó el **promedio diario de cada contaminante** (PM10, PM2.5, CO, NO₂, SO₂ y O₃) para trabajar en la misma escala temporal.
 
-- La Open-Meteo Air Quality API entrega los datos por **hora**, mientras que la base climática es **diaria**.
-- Se calculó el **promedio diario de cada contaminante** (PM10, PM2.5, CO, NO₂, SO₂ y O₃) para trabajar con la misma escala temporal que el dataset climático.
+**c) Identificación geográfica.** La respuesta de la API solo devuelve datos asociados a coordenadas, sin nombre de ciudad ni país. Se agregaron las columnas de **ciudad, país, latitud y longitud** a cada registro extraído.
 
-**c) Identificación geográfica de los registros de la API**
+**d) Estandarización.** Se eliminaron espacios adicionales en nombres de ciudades y países, se homologaron nombres de variables, se verificó la compatibilidad de coordenadas y se recortó el dataset de Kaggle al periodo 2023-01-01 – 2024-04-20.
 
-- La respuesta de la API no incluye el nombre de la ciudad ni del país, únicamente los datos asociados a unas coordenadas.
-- Se agregaron las columnas de **ciudad, país, latitud y longitud** a cada registro extraído, de modo que cada observación quedara identificada con su ubicación correspondiente.
+### Integración
 
-**d) Estandarización previa a la integración**
+**Problema encontrado:** en un primer intento se usó únicamente la fecha como llave, pero cada fecha aparece 20 veces (una por ciudad), lo que generaba combinaciones incorrectas entre ciudades.
 
-- Se eliminaron espacios adicionales en los nombres de ciudades y países.
-- Se estandarizaron nombres de ciudades, países y de las variables.
-- Se verificó que las coordenadas de ambas fuentes fueran compatibles.
-- Se recortó el dataset de Kaggle al periodo 2023-01-01 – 2024-04-20 para que coincidiera con la extracción de la API.
-
----
-
-## 4. Integración de los datasets
-
-La integración se realizó mediante un `merge` entre el dataset climático y el de calidad del aire.
-
-**Problema encontrado:** en un primer intento se utilizó únicamente la fecha como llave, pero cada fecha aparece 20 veces (una por ciudad), lo que generaba combinaciones incorrectas entre ciudades.
-
-**Solución:** la unión se hizo utilizando una llave compuesta:
+**Solución:** la unión se realizó con una llave compuesta.
 
 ```
 fecha + ciudad + país + latitud + longitud
 ```
 
-Con esto se garantizó que los datos climáticos y los de calidad del aire correspondieran siempre a la misma ubicación y al mismo día.
+Así se garantiza que los datos climáticos y los de calidad del aire correspondan siempre a la misma ubicación y al mismo día.
 
-Después de la extracción y nuevamente después de la integración se revisaron valores faltantes y registros duplicados, para comprobar la consistencia del conjunto antes de continuar con el análisis.
-
-Estructura del DataFrame integrado:
-
-| date | country | city | latitude | longitude | temperature_2m_mean | precipitation_sum | wind_speed_10m_max | pm10 | pm2_5 | carbon_monoxide | nitrogen_dioxide | sulphur_dioxide | ozone |
-|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+Se revisaron valores faltantes y duplicados **después de la extracción** y nuevamente **después de la integración**, para comprobar la consistencia antes de continuar con el análisis.
 
 ---
 
-## 5. Análisis exploratorio
+## Diagnóstico inicial
 
-Sobre el dataset integrado se analiza el comportamiento conjunto de las variables meteorológicas y de calidad del aire:
+| Revisión | Resultado |
+|---|---|
+| Valores faltantes en el dataset de Kaggle | Ninguno |
+| Duplicados completos en el dataset de Kaggle | Ninguno |
+| Valores faltantes en la extracción de la API (2023–2024) | Ninguno |
+| Valores faltantes en pruebas con 2022 | Presentes en varios contaminantes → motivó el recorte del periodo |
+| Duplicados tras la integración | Ninguno |
+| Tipos de datos | `date` requería conversión desde texto; el resto numérico |
 
-- Promedios por ciudad y por país.
-- Valores mínimos y máximos.
-- Variaciones mensuales y estacionales.
-- Correlaciones entre variables meteorológicas y contaminantes.
-- Rankings de ciudades según niveles de contaminación.
-- Diferencias entre ciudades con condiciones climáticas distintas.
-
----
-
-## 6. Visualización
-
-Las gráficas se elaboran principalmente con `matplotlib`:
-
-- Concentración promedio de cada contaminante por ciudad.
-- Temperatura promedio por ciudad.
-- Precipitación y velocidad del viento por ciudad.
-- Evolución temporal de contaminantes y de variables meteorológicas.
-- Relación entre precipitación / viento y niveles de PM10 y PM2.5.
-- Matriz de correlación entre variables meteorológicas y contaminantes.
-- Comparación entre países.
-- Rankings de ciudades.
+**Transformaciones que se anticipan para la siguiente etapa:** conversión del dataset procesado a Parquet, particionamiento por ciudad o por mes, y creación de variables derivadas (mes, estación del año, indicador de día lluvioso).
 
 ---
 
-# Organización del repositorio
+## Primera evidencia
 
-```
-proyecto/
-├── data/                 # datos crudos e integrados
-├── notebooks/            # exploración, limpieza, integración y análisis
-├── src/
-│   └── ingestion/        # scripts de extracción de la API de Open-Meteo
-└── README.md
-```
+<!-- COMPLETAR con los valores reales que arroje el notebook 01_exploration.ipynb -->
 
-El proceso de extracción se desarrolló mediante prueba y error dentro de `src/`. El código final de extracción quedó registrado en **`src/ingestion/`**, de manera que no solo exista la evidencia del proceso en el notebook, sino que la obtención de los datos pueda volver a ejecutarse.
+**Pregunta:** ¿Qué ciudades presentan los mayores niveles promedio de PM2.5 en el periodo analizado?
 
-## Control de versiones
+| Ciudad | País | PM2.5 promedio (µg/m³) |
+|---|---|---|
+| *(completar)* | | |
+| *(completar)* | | |
+| *(completar)* | | |
 
-Los cambios correspondientes a la integración de la API se trabajaron en un **branch separado** y posteriormente se integraron a `main`. Esto permitió dejar evidencia del proceso y evitar modificar o borrar accidentalmente contenido ya validado en la rama principal.
+**Interpretación:** *(Redactar 3–4 líneas: qué ciudades encabezan el ranking, si se agrupan por región o altitud, y cómo contrastan con las de menores niveles. Ligarlo a la pregunta principal.)*
+
 
 ---
 
-# Resultados principales
+## Limitaciones
 
-- Se confirmó que el dataset de Kaggle contiene **31,440 registros y 14 variables** de 20 ciudades y 20 países, sin valores faltantes ni duplicados.
-- Se logró extraer de la Open-Meteo Air Quality API los seis contaminantes (PM10, PM2.5, CO, NO₂, SO₂ y O₃) para las **20 ciudades**, en el periodo **2023-01-01 a 2024-04-20**, sin valores faltantes.
-- Los datos horarios de la API se agregaron a promedios diarios, quedando en la misma escala temporal que el dataset climático.
-- La integración mediante la llave compuesta *fecha + ciudad + país + latitud + longitud* permitió unir correctamente ambas fuentes, corrigiendo el problema de duplicación que se presentaba al unir únicamente por fecha.
-- El dataset integrado quedó validado sin valores faltantes ni duplicados, listo para el análisis exploratorio y la construcción de visualizaciones.
-
----
-
-# Limitaciones
-
-- Las ciudades analizadas son únicamente las 20 disponibles en el dataset y no representan a toda Latinoamérica.
-- El análisis se limita al periodo 2023-01-01 – 2024-04-20 por la disponibilidad consistente de datos en la API; los datos climáticos anteriores a 2023 no se utilizan.
-- En pruebas con consultas de 2022 se detectaron valores faltantes en los contaminantes, lo que motivó el recorte del periodo.
-- Kaggle y Open-Meteo pueden utilizar métodos distintos para generar o estimar sus datos, y las coordenadas pueden presentar pequeñas diferencias.
-- Los valores de contaminantes corresponden a modelos de calidad del aire y no a mediciones directas de estaciones locales de monitoreo.
-- Al promediar los datos horarios a nivel diario se pierden los picos y la variación intradía de los contaminantes.
-- La comparación entre ciudades debe considerar diferencias de altitud, geografía, densidad poblacional y actividad industrial, que no están incluidas en el dataset.
-- Una correlación entre variables no implica necesariamente una relación causal.
+- Las 20 ciudades disponibles no representan a toda Latinoamérica.
+- El análisis se limita al periodo 2023-01-01 – 2024-04-20; los datos climáticos anteriores a 2023 no se utilizan.
+- Los valores de contaminantes provienen de modelos de calidad del aire, no de mediciones directas de estaciones locales de monitoreo.
+- Al promediar los datos horarios a nivel diario se pierden los picos y la variación intradía.
+- Kaggle y Open-Meteo pueden usar métodos distintos para generar sus datos, y las coordenadas pueden diferir ligeramente.
+- La comparación entre ciudades no controla por altitud, densidad poblacional ni actividad industrial, variables no incluidas en el dataset.
+- Una correlación entre variables no implica causalidad.
 
 ---
 
-# Conclusiones
+## Control de versiones y colaboración
 
-La corrección de la integración con la API permitió consolidar un dataset único que combina información meteorológica y de calidad del aire para 20 ciudades de Latinoamérica en el periodo 2023-2024.
-
-Los principales aprendizajes de esta etapa fueron la importancia de **homologar la escala temporal** entre fuentes (horaria contra diaria), **unificar la zona horaria y el formato de fechas** (UTC), y **definir una llave de unión compuesta** que incluya la ubicación y no solamente la fecha, ya que una misma fecha se repite para las 20 ciudades.
-
-Con el dataset integrado y validado, el siguiente paso es desarrollar el análisis exploratorio y las visualizaciones para responder la pregunta de investigación sobre la relación entre las condiciones meteorológicas y los niveles de contaminación del aire entre las distintas ciudades.
+El trabajo se organiza mediante issues y ramas: cada tarea principal tiene un issue asociado, se desarrolla en una rama propia y se integra a `main` mediante pull request revisado por otro integrante. Esto deja evidencia del proceso y evita modificar directamente contenido ya validado en la rama principal.
