@@ -10,10 +10,10 @@ Proyecto semestral del curso de Datos Masivos. Integra un dataset climático dia
 
 | Nombre | Usuario de GitHub |
 |---|---|
-| María José Barreda | @majobarreda |
-| Francisco Paolo del Valle Reyes | @usuario |
-| *Integrante 3* | @usuario |
-| *Integrante 4* | @usuario |
+| María José Barreda | 
+| Sofia Villegas | 
+| Emiliano Martinez| 
+| Diego Garcia | 
 
 ---
 
