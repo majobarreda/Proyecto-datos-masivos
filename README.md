@@ -194,7 +194,8 @@ Proyecto-datos-masivos/
 │   ├── 02_limpieza_y_union.ipynb      # limpieza e integración de clima + aire
 │   ├── 03_analisis_y_graficas.ipynb   # análisis descriptivo de las 20 ciudades
 │   ├── 04_diccionario_de_datos.ipynb  # diccionario de datos en notebook
-│   └── 05_mortalidad_rezago_cdmx.ipynb # correlación por rezago: clima+aire vs. mortalidad CDMX
+│   ├── 05_extraccion_mortalidad_inegi.ipynb # primera extracción y diagnóstico de mortalidad (INEGI)
+│   └── 06_mortalidad_rezago_cdmx.ipynb # correlación por rezago: clima+aire vs. mortalidad CDMX
 │
 ├── src/
 │   ├── ingestion/
@@ -349,6 +350,14 @@ Se revisaron valores faltantes y duplicados **después de la extracción** y nue
 - Una correlación entre variables (o entre exposición rezagada y mortalidad) no implica causalidad; no se controla por comorbilidades individuales, tabaquismo ni acceso a salud.
 
 Detalle completo de alcance y limitaciones en `docs/project_scope.md`.
+
+---
+
+## Estado actual
+
+- **Completo:** clima y contaminantes de 20 ciudades (fase exploratoria), integración clima+aire para la Ciudad de México, código de procesamiento de mortalidad (`src/processing/`), análisis de correlación por rezago (`src/analysis/analisis_rezago.py`), notebooks 01–04 (fase exploratoria) y 05–06 (mortalidad y rezago en CDMX).
+- **Pendiente:** descargar los microdatos anuales de INEGI y colocarlos en `data/raw/` para poder ejecutar `notebooks/05_extraccion_mortalidad_inegi.ipynb` y `06_mortalidad_rezago_cdmx.ipynb` con datos reales (por ahora el código es funcional pero no se ha corrido con mortalidad real, así que esos dos notebooks no traen salidas precalculadas).
+- **Próxima entrega (segundo parcial):** automatizar más el pipeline (`main.py` o comandos encadenados), evaluar sustituir Open-Meteo por mediciones de estación (SIMAT/RAMA-REDMET, ver `docs/decisions.md`), y avanzar de correlación simple a un modelo de regresión con términos rezagados.
 
 ---
 
