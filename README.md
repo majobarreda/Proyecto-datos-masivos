@@ -193,7 +193,8 @@ Proyecto-datos-masivos/
 │   ├── 01_exploracion_inicial.ipynb   # exploración de las 20 ciudades (fase exploratoria)
 │   ├── 02_limpieza_y_union.ipynb      # limpieza e integración de clima + aire
 │   ├── 03_analisis_y_graficas.ipynb   # análisis descriptivo de las 20 ciudades
-│   └── 04_diccionario_de_datos.ipynb  # diccionario de datos en notebook
+│   ├── 04_diccionario_de_datos.ipynb  # diccionario de datos en notebook
+│   └── 05_mortalidad_rezago_cdmx.ipynb # correlación por rezago: clima+aire vs. mortalidad CDMX
 │
 ├── src/
 │   ├── ingestion/
