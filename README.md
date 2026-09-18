@@ -265,22 +265,6 @@ Se revisaron valores faltantes y duplicados **después de la extracción** y nue
 
 ---
 
-## Primera evidencia
-
-<!-- COMPLETAR con los valores reales que arroje el notebook 01_exploration.ipynb -->
-
-**Pregunta:** ¿Qué ciudades presentan los mayores niveles promedio de PM2.5 en el periodo analizado?
-
-| Ciudad | País | PM2.5 promedio (µg/m³) |
-|---|---|---|
-| *(completar)* | | |
-| *(completar)* | | |
-| *(completar)* | | |
-
-**Interpretación:** *(Redactar 3–4 líneas: qué ciudades encabezan el ranking, si se agrupan por región o altitud, y cómo contrastan con las de menores niveles. Ligarlo a la pregunta principal.)*
-
-
----
 
 ## Limitaciones
 
