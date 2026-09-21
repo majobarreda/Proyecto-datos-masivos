@@ -148,10 +148,10 @@ Durante las pruebas de extracción se detectó que en consultas correspondientes
 
 | Campo | Detalle |
 |---|---|
-| Origen | INEGI — https://www.inegi.org.mx/programas/mortalidad/?ps=microdatos |
+| Origen | INEGI — https://www.inegi.org.mx/programas/edr/#microdatos |
 | Propietario | INEGI (información pública) |
 | Método de acceso | Descarga manual de microdatos anuales (no hay URL estable de descarga directa por año) |
-| Formato | CSV, un archivo por año |
+| Formato | DBF (formato dBASE), un archivo por año — se lee con la librería `dbfread` |
 | Volumen aproximado | Cientos de miles de registros nacionales por año; unos cuantos miles corresponden a la Ciudad de México |
 | Periodo disponible | Serie anual 1990–2024 (el año más reciente se publica con ~10–14 meses de rezago) |
 | Frecuencia de actualización | Anual |
@@ -262,16 +262,16 @@ El script consulta la Open-Meteo Air Quality API para las 20 ciudades del datase
 
 ### 5. Obtener los datos de mortalidad (INEGI)
 
-Descargar los microdatos anuales de "Estadísticas de Defunciones Registradas" desde https://www.inegi.org.mx/programas/mortalidad/?ps=microdatos y colocarlos en:
+Descargar los microdatos anuales de "Estadísticas de Defunciones Registradas" desde https://www.inegi.org.mx/programas/edr/#microdatos (pestaña "Microdatos", botón "DBF" del año deseado) y colocarlos en:
 
 ```
-data/raw/defunciones_<año>.csv
+data/raw/defunciones_<año>.dbf
 ```
 
 Procesarlos con:
 
 ```bash
-python -m src.processing.procesar_mortalidad_inegi data/raw/defunciones_2023.csv data/raw/defunciones_2024.csv
+python -m src.processing.procesar_mortalidad_inegi data/raw/defunciones_2023.dbf data/raw/defunciones_2024.dbf
 ```
 
 ### 6. Construir el panel diario de la Ciudad de México y analizarlo

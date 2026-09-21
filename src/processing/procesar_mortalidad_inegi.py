@@ -6,17 +6,20 @@ Mexico por grupo de causa (respiratoria, cardiovascular, otra).
 
 Los microdatos se descargan manualmente (no existe una URL de descarga
 directa estable por anio) desde:
-    https://www.inegi.org.mx/programas/mortalidad/?ps=microdatos
-Un archivo CSV por anio, por ejemplo:
-    data/raw/defunciones_2023.csv
-    data/raw/defunciones_2024.csv
+    https://www.inegi.org.mx/programas/edr/#microdatos
+Un archivo por anio, en formato DBF (el que distribuye INEGI) o CSV, por
+ejemplo:
+    data/raw/defunciones_2023.dbf
+    data/raw/defunciones_2024.dbf
 
 Uso:
-    python -m src.processing.procesar_mortalidad_inegi data/raw/defunciones_2023.csv data/raw/defunciones_2024.csv
+    python -m src.processing.procesar_mortalidad_inegi data/raw/defunciones_2023.dbf data/raw/defunciones_2024.dbf
 """
 import sys
+from pathlib import Path
 
 import pandas as pd
+from dbfread import DBF
 
 CLAVE_ENTIDAD_CDMX = 9  # Ciudad de Mexico en el catalogo de entidades de INEGI
 
@@ -61,8 +64,21 @@ def clasificar_causa(codigo_cie10):
     return "otra"
 
 
+def cargar_defunciones(ruta):
+    """Carga un archivo de defunciones de INEGI, ya sea en formato DBF
+    (el que distribuye INEGI) o CSV, segun la extension del archivo."""
+    extension = Path(ruta).suffix.lower()
+
+    if extension == ".dbf":
+        tabla = DBF(ruta, encoding="latin-1", ignore_missing_memofile=True)
+        return pd.DataFrame(iter(tabla))
+
+    return pd.read_csv(ruta, low_memory=False)
+
+
 def procesar_archivo(ruta_csv):
-    df = pd.read_csv(ruta_csv, low_memory=False)
+    df = cargar_defunciones(ruta_csv)
+    df.columns = df.columns.str.lower()  # DBF suele traer los nombres en mayusculas
 
     col_entidad = _resolver_columna(df, CANDIDATOS_COLUMNAS["entidad_ocurrencia"])
     col_anio = _resolver_columna(df, CANDIDATOS_COLUMNAS["anio"])
@@ -130,6 +146,6 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         sys.exit(
             "Uso: python -m src.processing.procesar_mortalidad_inegi "
-            "<ruta_csv_anio_1> [<ruta_csv_anio_2> ...]"
+            "<ruta_archivo_anio_1> [<ruta_archivo_anio_2> ...]"
         )
     main(sys.argv[1:])
